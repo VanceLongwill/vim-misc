@@ -78,26 +78,26 @@ local cmp = require'cmp'
 local lspkind = require'lspkind'
 
 cmp.setup({
-    mapping = {
-      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.close(),
-      ['C-n>'] = cmp.select_next_item(),
-      ['C-p>'] = cmp.select_prev_item(),
-      ['<CR>'] = cmp.mapping.confirm({
-        behavior = cmp.ConfirmBehavior.Replace,
-        select = true
-      }),
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-    }, {
-      { name = 'buffer' },
-    }),
-    formatting = {
-      format = lspkind.cmp_format({with_text = false, maxwidth = 50})
-    }
+mapping = {
+  ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  ['<C-l>'] = cmp.mapping.complete(),
+  ['<C-e>'] = cmp.mapping.close(),
+  ['<C-j>'] = cmp.select_next_item(),
+  ['<C-k>'] = cmp.select_prev_item(),
+  ['<CR>'] = cmp.mapping.confirm({
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = true
+  }),
+},
+sources = cmp.config.sources({
+  { name = 'nvim_lsp' },
+}, {
+  { name = 'buffer' },
+}),
+formatting = {
+  format = lspkind.cmp_format({with_text = false, maxwidth = 50})
+}
 })
 
 vim.cmd [[highlight! default link CmpItemKind CmpItemMenuDefault]]
