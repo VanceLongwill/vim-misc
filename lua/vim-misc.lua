@@ -78,26 +78,45 @@ local cmp = require'cmp'
 local lspkind = require'lspkind'
 
 cmp.setup({
-mapping = {
-  ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-  ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  ['<C-Space>'] = cmp.mapping.complete(),
-  ['<C-e>'] = cmp.mapping.close(),
-  ['<C-j>'] = cmp.mapping.select_next_item(),
-  ['<C-k>'] = cmp.mapping.select_prev_item(),
-  ['<CR>'] = cmp.mapping.confirm({
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true
-  }),
-},
-sources = cmp.config.sources({
-  { name = 'nvim_lsp' },
-}, {
-  { name = 'buffer' },
-}),
-formatting = {
-  format = lspkind.cmp_format({with_text = false, maxwidth = 50})
-}
+    mapping = {
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<C-j>'] = cmp.mapping.select_next_item(),
+      ['<C-k>'] = cmp.mapping.select_prev_item(),
+      ['<CR>'] = cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = true
+      }),
+    },
+
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+    }, {
+      { name = 'buffer' },
+    }),
+
+    formatting = {
+      format = lspkind.cmp_format({with_text = false, maxwidth = 50})
+    }
+
+    -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline('/', {
+        sources = {
+          { name = 'buffer' }
+        }
+    })
+
+    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline(':', {
+      sources = cmp.config.sources({
+        { name = 'path' }
+      }, {
+        { name = 'cmdline' }
+      })
+    })
+
 })
 
 vim.cmd [[highlight! default link CmpItemKind CmpItemMenuDefault]]
