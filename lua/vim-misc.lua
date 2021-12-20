@@ -81,10 +81,10 @@ cmp.setup({
 mapping = {
   ['<C-d>'] = cmp.mapping.scroll_docs(-4),
   ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  ['<C-l>'] = cmp.mapping.complete(),
+  ['<C-Space>'] = cmp.mapping.complete(),
   ['<C-e>'] = cmp.mapping.close(),
-  ['<C-j>'] = cmp.select_next_item(),
-  ['<C-k>'] = cmp.select_prev_item(),
+  ['<C-n>'] = cmp.select_next_item(),
+  ['<C-p>'] = cmp.select_prev_item(),
   ['<CR>'] = cmp.mapping.confirm({
     behavior = cmp.ConfirmBehavior.Replace,
     select = true
