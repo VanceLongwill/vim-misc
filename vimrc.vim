@@ -61,8 +61,15 @@ set wildignore+=*.pyc         " Ignore Python compiled files
 set wildignore+=*.rbc         " Ignore Rubinius compiled files
 set wildignore+=*.swp         " Ignore vim backups
 
+
 " GUI settings
-colorscheme onehalfdark
+set background=dark
+colorscheme solarized8
+
+" Change vertical split character to be a space (essentially hide it)
+set fillchars+=vert:.
+" Set floating window to be slightly transparent
+set winbl=10
 
 " This is required to force 24-bit color since I use a modern terminal.
 set termguicolors
@@ -88,6 +95,8 @@ endif
 if exists("&fuopt")
     set fuopt+=maxhorz
 endif
+
+nnoremap <leader>c :noh<CR>
 
 "----------------------------------------------------------------------
 " Key Mappings
@@ -124,6 +133,9 @@ endif
 " Shortcut to edit the vimmisc
 nmap <silent> <leader>vimmisc :execute "e " . g:vim_home_path . "/plugged/vim-misc/vimrc.vim"<CR>
 
+" Some plugin is remapping y to y$, this prevents it
+nnoremap Y Y
+
 " Make navigating around splits easier
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -157,7 +169,6 @@ nnoremap <leader>d   :bd<cr>
 
 " Terminal mode
 if has("nvim")
-    tnoremap <esc> <C-\><C-n>
     tnoremap jj <C-\><C-n>
     tnoremap jJ <C-\><C-n>
     tnoremap Jj <C-\><C-n>
@@ -166,7 +177,6 @@ if has("nvim")
     tnoremap jK <C-\><C-n>
     tnoremap Jk <C-\><C-n>
     tnoremap JK <C-\><C-n>
-    nnoremap <Leader>c :terminal <CR>
 endif
 
 if has("gui_running")
@@ -176,11 +186,6 @@ if has("gui_running")
     map <C-[> :tabprevious<CR>
     map <C-]> :tabnext<CR>
 endif
-
-" CtrlP
-nnoremap <leader>t :CtrlP<cr>
-nnoremap <leader>b :CtrlPBuffer<cr>
-nnoremap <leader>l :CtrlPLine<cr>
 
 " Easymotion
 nmap <SPACE> <Plug>(easymotion-s)
@@ -221,23 +226,6 @@ let g:airline_powerline_fonts = 1
 " Don't need to set this since Dracula includes a powerline theme
 " let g:airline_theme = "powerlineish"
 
-" CtrlP
-let g:ctrlp_max_files = 10000
-if has("unix")
-    let g:ctrlp_user_command = {
-        \ 'types': {
-            \ 1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
-            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-        \ },
-        \ 'fallback': 'find %s -type f | head -' . g:ctrlp_max_files
-    \ }
-endif
-
-let g:ctrlp_buffer_func = { 'enter': 'MyCtrlPMappings' }
-
-func! MyCtrlPMappings()
-    nnoremap <buffer> <silent> <c-@> :call <sid>DeleteBuffer()<cr>
-endfunc
 
 func! s:DeleteBuffer()
   let line = getline('.')
@@ -255,6 +243,75 @@ let g:vim_json_syntax_conceal = 0
 
 " Default SQL type to PostgreSQL
 let g:sql_type_default = 'pgsql'
+
+"vnoremap <leader>y :OSCYank<CR>
+nmap <leader>y <Plug>OSCYank
+
+let g:mkdp_open_to_the_world = 1
+let g:mkdp_port = '9879'
+
+" vim wiki use markdown
+let g:vimwiki_list = [
+      \ {'path': '~/projects/paddle/vimwiki/', 'syntax': 'markdown', 'ext': '.md'},
+      \ {'path': '~/projects/paymentsense/vimwiki/', 'syntax': 'markdown', 'ext': '.md'},
+      \ {'path': '~/projects/lance/vimwiki/', 'syntax': 'markdown', 'ext': '.md'},
+      \ ]
+
+" Enable spellcheck for markdown files
+autocmd BufRead,BufNewFile *.md setlocal spell
+
+" Support for comments in jsonc files
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" FZF
+nnoremap <C-p> :FZF<CR>
+
+" Set relative line numbers
+set relativenumber
+
+" Clear Highlighting
+nmap ,c :noh<CR>
+
+" Use alt + > / alt + < to increase/decrease window width
+nnoremap ≥ <C-w>>
+nnoremap ≤ <C-w><
+
+" Quick window switching
+" Use alt keys to navigate windows
+" In terminal mode
+tnoremap ˙ <C-\><C-N><C-w>h
+tnoremap ∆ <C-\><C-N><C-w>j
+tnoremap ˚ <C-\><C-N><C-w>k
+tnoremap ¬ <C-\><C-N><C-w>l
+" In normal mode
+nnoremap ˙ <C-w>h
+nnoremap ∆ <C-w>j
+nnoremap ˚ <C-w>k
+nnoremap ¬ <C-w>l
+
+
+try
+  colorscheme solarized8
+  " colorscheme OceanicNext
+catch
+  colorscheme slate
+endtry
+
+" === Nerdtree shorcuts === "
+"  <leader>n - Toggle NERDTree on/off
+"  <leader>f - Opens current file location in NERDTree
+nnoremap <leader>n :NERDTreeFind<CR>
+nnoremap <leader>N :NERDTreeClose<CR>
+
+" Open current working dir in nerdtree
+nmap .. :e.<CR>
+" Open parent dir of file in current buffer in nerdtree
+nmap § :e %:h<CR>
+
+" Gwip
+command Gwip !git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify -m "--wip-- [skip ci]"
+" Gunwip
+command Gunwip !git log -n 1 | grep -q -c "\-\-wip\-\-" && git reset HEAD~1
 
 "----------------------------------------------------------------------
 " Neovim
