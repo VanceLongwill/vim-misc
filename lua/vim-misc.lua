@@ -8,6 +8,7 @@
 ---------------------------------------------------------------------
 -- LSP Clients
 ---------------------------------------------------------------------
+
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
@@ -73,6 +74,12 @@ local cmp = require'cmp'
 local lspkind = require'lspkind'
 
 cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+      end,
+    },
+
     mapping = {
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
