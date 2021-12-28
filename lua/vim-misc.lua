@@ -126,7 +126,7 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(
 local servers = { "gopls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
-      on_attach = on_attach
+      on_attach = on_attach,
       capabilities = capabilities
   }
 end
